@@ -5,11 +5,17 @@ const listaVehiculos = document.getElementById("lista-vehiculos");
 formularioCrear.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const matricula = document.getElementById("matricula").value;
-  const marca = document.getElementById("marca").value;
-  const modelo = document.getElementById("modelo").value;
-  const color = document.getElementById("color").value;
-  const lugar = parseInt(document.getElementById("lugar").value);
+  const matriculaInput = document.getElementById("matricula");
+  const marcaInput = document.getElementById("marca");
+  const modeloInput = document.getElementById("modelo");
+  const colorInput = document.getElementById("color");
+  const lugarInput = document.getElementById("lugar");
+
+  const matricula = matriculaInput.value;
+  const marca = marcaInput.value;
+  const modelo = modeloInput.value;
+  const color = colorInput.value;
+  const lugar = parseInt(lugarInput.value);
 
   const nuevoVehiculo = {
     matricula: matricula,
@@ -29,6 +35,14 @@ formularioCrear.addEventListener("submit", (e) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data.message);
+
+      // Limpiar los campos del formulario
+      matriculaInput.value = "";
+      marcaInput.value = "";
+      modeloInput.value = "";
+      colorInput.value = "";
+      lugarInput.value = "";
+
       // Actualizar la lista de vehículos después de crear uno
       obtenerVehiculos();
     })
@@ -107,7 +121,8 @@ function agregarBotonesEliminar(vehiculos) {
 
     // Agregar botón de eliminar
     const botonEliminar = document.createElement("button");
-    botonEliminar.textContent = "Eliminar";
+    botonEliminar.textContent = "Dejar libre";
+    botonEliminar.classList.add("boton-eliminar"); // Agregar una clase al botón
     botonEliminar.addEventListener("click", () => {
       eliminarVehiculo(vehiculo.id);
       obtenerVehiculos();

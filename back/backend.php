@@ -37,12 +37,7 @@ $crearTabla = "CREATE TABLE IF NOT EXISTS vehiculos (
     lugar INT NOT NULL
 )";
 
-/* if ($conexion->query($crearTabla) === TRUE) {
-    // La tabla se crea sin necesidad de mensajes adicionales
-} else {
-    echo "Error al crear la tabla: " . $conexion->error;
-}
- */
+
 // Ruta para crear un vehículo
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $data = json_decode(file_get_contents("php://input"));
