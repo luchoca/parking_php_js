@@ -11,15 +11,15 @@ if ($conexion->connect_error) {
     die("Error en la conexión a la base de datos: " . $conexion->connect_error);
 }
 // Establecer encabezados CORS
-header("Access-Control-Allow-Origin: *"); // Permitir solicitudes desde cualquier origen
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS"); // Permitir los métodos HTTP que necesites
+header("Access-Control-Allow-Origin: http://127.0.0.1:5500"); // Reemplaza con tu origen
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE"); // Agrega DELETE a los métodos permitidos
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+header("Access-Control-Allow-Origin: *"); // Permitir solicitudes desde cualquier origen
 header("Content-Type: application/json"); // Establecer el tipo de contenido como JSON
 
 // Crear la base de datos si no existe
 $crearBD = "CREATE DATABASE IF NOT EXISTS $base_de_datos";
 if ($conexion->query($crearBD) === TRUE) {
-    // La base de datos se crea sin necesidad de mensajes adicionales
 } else {
     echo "Error al crear la base de datos: " . $conexion->error;
 }
@@ -37,12 +37,12 @@ $crearTabla = "CREATE TABLE IF NOT EXISTS vehiculos (
     lugar INT NOT NULL
 )";
 
-if ($conexion->query($crearTabla) === TRUE) {
+/* if ($conexion->query($crearTabla) === TRUE) {
     // La tabla se crea sin necesidad de mensajes adicionales
 } else {
     echo "Error al crear la tabla: " . $conexion->error;
 }
-
+ */
 // Ruta para crear un vehículo
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $data = json_decode(file_get_contents("php://input"));
@@ -83,6 +83,29 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     } else {
         http_response_code(404);
         echo json_encode(array("message" => "No hay vehículos registrados."));
+    }
+}
+
+// Ruta para eliminar un vehículo
+if ($_SERVER["REQUEST_METHOD"] === "DELETE") {
+    // Obtenemos el ID del vehículo a eliminar desde los parámetros de la URL
+    $id = $_GET['id']; // Suponiendo que el parámetro se llama 'id'
+
+    // Preparamos la consulta SQL para eliminar el vehículo
+    $eliminarVehiculo = "DELETE FROM vehiculos WHERE id = ?";
+    $stmt = $conexion->prepare($eliminarVehiculo);
+    $stmt->bind_param("i", $id);
+
+    // Ejecutamos la consulta SQL
+    if ($stmt->execute()) {
+        // Si la eliminación fue exitosa, respondemos con un código 204 (Sin contenido)
+        http_response_code(204);
+        exit(); // Salir sin enviar datos JSON
+    } else {
+        // Si hubo un error en la eliminación, respondemos con un código 500 (Error interno del servidor)
+        http_response_code(500);
+        echo json_encode(array("message" => "Error al eliminar el vehículo."));
+        exit();
     }
 }
 
