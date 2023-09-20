@@ -10,6 +10,7 @@ $conexion = new mysqli($host, $usuario, $contraseña, $base_de_datos);
 if ($conexion->connect_error) {
     die("Error en la conexión a la base de datos: " . $conexion->connect_error);
 }
+
 // Establecer encabezados CORS
 header("Access-Control-Allow-Origin: http://127.0.0.1:5500"); // Reemplaza con tu origen
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE"); // Agrega DELETE a los métodos permitidos
@@ -30,13 +31,16 @@ $conexion->select_db($base_de_datos);
 // Crear la tabla 'vehiculos' si no existe
 $crearTabla = "CREATE TABLE IF NOT EXISTS vehiculos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    matricula VARCHAR(20) NOT NULL,
+    matricula VARCHAR(20) NOT NULL UNIQUE,  -- Añadimos UNIQUE para garantizar matrículas únicas
     marca VARCHAR(50) NOT NULL,
     modelo VARCHAR(50) NOT NULL,
     color VARCHAR(20) NOT NULL,
     lugar INT NOT NULL
 )";
 
+if (!$conexion->query($crearTabla)) {
+    echo "Error al crear la tabla 'vehiculos': " . $conexion->error;
+}
 
 // Ruta para crear un vehículo
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -48,18 +52,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $color = $data->color;
     $lugar = $data->lugar;
 
-    $insertarVehiculo = "INSERT INTO vehiculos (matricula, marca, modelo, color, lugar)
-                        VALUES (?, ?, ?, ?, ?)";
-    
-    $stmt = $conexion->prepare($insertarVehiculo);
-    $stmt->bind_param("ssssi", $matricula, $marca, $modelo, $color, $lugar);
+    // Verificar si la matrícula ya existe en la base de datos
+    $verificarMatricula = "SELECT id FROM vehiculos WHERE matricula = ?";
+    $stmt_verificar = $conexion->prepare($verificarMatricula);
+    $stmt_verificar->bind_param("s", $matricula);
+    $stmt_verificar->execute();
+    $stmt_verificar->store_result();
 
-    if ($stmt->execute()) {
-        http_response_code(201);
-        echo json_encode(array("message" => "Vehículo creado con éxito."));
+    if ($stmt_verificar->num_rows > 0) {
+        // Ya existe un vehículo con la misma matrícula, responder con un error
+        http_response_code(400);
+        echo json_encode(array("message" => "La matrícula ya está registrada."));
     } else {
-        http_response_code(500);
-        echo json_encode(array("message" => "Error al crear el vehículo."));
+        // Insertar el nuevo vehículo en la base de datos
+        $insertarVehiculo = "INSERT INTO vehiculos (matricula, marca, modelo, color, lugar)
+                            VALUES (?, ?, ?, ?, ?)";
+        
+        $stmt = $conexion->prepare($insertarVehiculo);
+        $stmt->bind_param("ssssi", $matricula, $marca, $modelo, $color, $lugar);
+
+        if ($stmt->execute()) {
+            http_response_code(201);
+            echo json_encode(array("message" => "Vehículo creado con éxito."));
+        } else {
+            http_response_code(500);
+            echo json_encode(array("message" => "Error al crear el vehículo."));
+        }
     }
 }
 
@@ -107,7 +125,3 @@ if ($_SERVER["REQUEST_METHOD"] === "DELETE") {
 // Cerrar la conexión
 $conexion->close();
 ?>
-
-
-
-
