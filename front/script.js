@@ -114,6 +114,7 @@ function eliminarVehiculo(id) {
         );
       }
       obtenerVehiculos(); // Actualiza la lista después de eliminar
+      window.location.reload();
     })
     .catch((error) => {
       console.error("Error en la solicitud:", error);
