@@ -98,3 +98,15 @@ li:hover {
 .boton-eliminar:hover {
   background-color: #c82333; /* Cambia el color de fondo al pasar el mouse sobre el botón de eliminar */
 }
+#mensaje-lleno {
+  background-color: #f44336; /* Color de fondo rojo */
+  color: white; /* Color de texto blanco */
+  padding: 10px; /* Espaciado interior */
+  border-radius: 5px; /* Bordes redondeados */
+  display: none; /* Inicialmente oculto */
+  position: fixed; /* Posición fija para que se muestre en la parte superior */
+  top: 0;
+  left: 0;
+  width: 100%; /* Ancho del 100% de la ventana */
+  text-align: center; /* Texto centrado */
+}

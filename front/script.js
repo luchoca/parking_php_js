@@ -42,7 +42,22 @@ formularioCrear.addEventListener("submit", (e) => {
       modeloInput.value = "";
       colorInput.value = "";
       lugarInput.value = "";
+      // Obtén la cantidad actual de vehículos en la lista
+      const vehiculosActuales = listaVehiculos.querySelectorAll("li").length;
 
+      if (vehiculosActuales >= 20) {
+        // Mostrar el mensaje de estacionamiento lleno
+        const mensajeLleno = document.getElementById("mensaje-lleno");
+        mensajeLleno.style.display = "block"; // Mostrar el mensaje
+
+        // También puedes agregar una clase CSS para dar estilo al mensaje si lo deseas
+        // mensajeLleno.classList.add("mensaje-lleno");
+
+        console.log(
+          "El estacionamiento está lleno. No se puede agregar más vehículos."
+        );
+        return;
+      }
       // Actualizar la lista de vehículos después de crear uno
       obtenerVehiculos();
     })
