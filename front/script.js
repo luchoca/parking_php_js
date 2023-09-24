@@ -42,16 +42,14 @@ formularioCrear.addEventListener("submit", (e) => {
       modeloInput.value = "";
       colorInput.value = "";
       lugarInput.value = "";
+
       // Obtén la cantidad actual de vehículos en la lista
       const vehiculosActuales = listaVehiculos.querySelectorAll("li").length;
 
-      if (vehiculosActuales >= 20) {
+      if (vehiculosActuales >= 50) {
         // Mostrar el mensaje de estacionamiento lleno
         const mensajeLleno = document.getElementById("mensaje-lleno");
-        mensajeLleno.style.display = "block"; // Mostrar el mensaje
-
-        // También puedes agregar una clase CSS para dar estilo al mensaje si lo deseas
-        // mensajeLleno.classList.add("mensaje-lleno");
+        mensajeLleno.style.display = "block"; // Mostrar el mensaje en pantalla
 
         console.log(
           "El estacionamiento está lleno. No se puede agregar más vehículos."
@@ -86,15 +84,10 @@ function obtenerVehiculos() {
       if (data.length === 0) {
         // Si no hay vehículos, mostrar un mensaje o realizar alguna acción
         const mensajeVacio = document.createElement("p");
-        mensajeVacio.textContent = "El PARKING esta vacio";
+        mensajeVacio.textContent = "El PARKING esta vacío";
         listaVehiculos.appendChild(mensajeVacio);
       } else {
-        data.forEach((vehiculo) => {
-          const li = document.createElement("li");
-          li.textContent = `${vehiculo.matricula} - ${vehiculo.marca} - ${vehiculo.modelo} - ${vehiculo.color} - Lugar: ${vehiculo.lugar}`;
-          listaVehiculos.appendChild(li);
-        });
-        agregarBotonesEliminar(data);
+        agregarVehiculosAlEdificio(data); // Llama a la función para mostrar los vehículos en el edificio
       }
     })
     .catch((error) => {
@@ -114,37 +107,64 @@ function eliminarVehiculo(id) {
         );
       }
       obtenerVehiculos(); // Actualiza la lista después de eliminar
-      window.location.reload();
     })
     .catch((error) => {
       console.error("Error en la solicitud:", error);
     });
 }
 
+// Cuando obtengas la lista de vehículos, llama a la función para mostrarlos en el edificio
+function agregarVehiculosAlEdificio(vehiculos) {
+  // Obtén el elemento contenedor del edificio
+  const edificio = document.getElementById("edificio");
+
+  // Limpiar el contenido del edificio
+  edificio.innerHTML = "";
+
+  // Crear una matriz bidimensional para representar el edificio
+  const edificioMatrix = [];
+
+  // Llenar la matriz con espacios en blanco para cada lugar en el edificio
+  for (let i = 0; i < 5; i++) {
+    edificioMatrix.push([]);
+    for (let j = 0; j < 10; j++) {
+      edificioMatrix[i][j] = "";
+    }
+  }
+
+  // Colocar los vehículos en la matriz según su lugar
+  vehiculos.forEach((vehiculo) => {
+    const lugar = vehiculo.lugar;
+    if (lugar >= 1 && lugar <= 50) {
+      const piso = Math.floor((lugar - 1) / 10);
+      const lugarEnPiso = (lugar - 1) % 10;
+      edificioMatrix[piso][lugarEnPiso] = `${vehiculo.matricula}`;
+    }
+  });
+
+  // Crear y agregar elementos HTML para representar el edificio
+  for (let i = 0; i < 5; i++) {
+    const pisoDiv = document.createElement("div");
+    pisoDiv.classList.add("piso");
+    for (let j = 0; j < 10; j++) {
+      const lugarDiv = document.createElement("div");
+      lugarDiv.classList.add("lugar");
+      lugarDiv.textContent = edificioMatrix[i][j];
+      pisoDiv.appendChild(lugarDiv);
+    }
+    edificio.appendChild(pisoDiv);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const botonVerEdificio = document.getElementById("ver-edificio");
+
+  if (botonVerEdificio) {
+    botonVerEdificio.addEventListener("click", () => {
+      const ventanaEdificio = window.open("edificio.html", "_blank");
+    });
+  }
+});
+
 // Cargar la lista de vehículos al cargar la página
 obtenerVehiculos();
-
-function agregarBotonesEliminar(vehiculos) {
-  const listaVehiculos = document.getElementById("lista-vehiculos");
-
-  // Limpiar la lista antes de agregar elementos
-  listaVehiculos.innerHTML = "";
-
-  // Iterar a través de los vehículos y crear elementos de lista con botones de eliminar
-  vehiculos.forEach((vehiculo) => {
-    const li = document.createElement("li");
-    li.textContent = `${vehiculo.matricula} - ${vehiculo.marca} - ${vehiculo.modelo} - ${vehiculo.color} - Lugar: ${vehiculo.lugar}`;
-
-    // Agregar botón de eliminar
-    const botonEliminar = document.createElement("button");
-    botonEliminar.textContent = "Dejar libre";
-    botonEliminar.classList.add("boton-eliminar"); // Agregar una clase al botón
-    botonEliminar.addEventListener("click", () => {
-      eliminarVehiculo(vehiculo.id);
-      obtenerVehiculos();
-    });
-
-    li.appendChild(botonEliminar);
-    listaVehiculos.appendChild(li);
-  });
-}
