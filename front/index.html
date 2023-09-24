@@ -38,12 +38,14 @@
       <p style="text-align: center; margin: 1%" id="contador-lugares">
         Lugares disponibles:
       </p>
-      <!--       <button id="ver-edificio">Ver Edificio</button>
- -->
       <ul class="titulo" id="lista-vehiculos"></ul>
-      <div id="edificio"></div>
+      <div id="edificio">
+        <button class="eliminar" data-lugar="${lugar}">Eliminar</button>
+      </div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/formulario.js"></script>
+    <script type="module" src="js/edificio.js"></script>
   </body>
 </html>
