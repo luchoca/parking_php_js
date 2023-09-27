@@ -25,9 +25,12 @@
 
         <input type="submit" value="Crear Vehículo" />
       </form>
+      <div id="mensaje" style="display: none"></div>
+
       <div id="mensaje-lleno" style="display: none; text-align: center">
         El estacionamiento está lleno. No se puede agregar más vehículos.
       </div>
+      <div id="contenedor-mensajes"></div>
     </div>
 
     <br />
@@ -40,10 +43,15 @@
       </p>
       <ul class="titulo" id="lista-vehiculos"></ul>
       <div id="edificio">
-        <button class="eliminar" data-lugar="${lugar}">Eliminar</button>
+        <!--         <button class="eliminar" data-lugar="${lugar}">Eliminar</button>
+ -->
       </div>
     </div>
-
+    <footer id="footer">
+      <div class="container">
+        <p>&copy; Prueba Tecnica Pay Pros - Luciano Castro</p>
+      </div>
+    </footer>
     <script type="module" src="js/script.js"></script>
     <script type="module" src="js/formulario.js"></script>
     <script type="module" src="js/edificio.js"></script>

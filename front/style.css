@@ -125,10 +125,20 @@ li:hover {
 /* Estilos para cada lugar en el edificio */
 .lugar {
   width: 167px; /* Ajusta el ancho según tus preferencias */
-  height: 80px; /* Ajusta la altura según tus preferencias */
+  height: 160px; /* Ajusta la altura según tus preferencias */
   border: 1px solid #000; /* Borde para cada lugar */
   margin: 2px; /* Espacio entre lugares */
   display: flex;
   align-items: center;
   justify-content: center;
+}
+footer {
+  background-color: #0056b3;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
+.container {
+  max-width: 960px;
+  margin: 0 auto;
 }

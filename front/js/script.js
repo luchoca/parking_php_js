@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function obtenerVehiculos() {
   try {
     const response = await fetch(
-      "http://localhost:8888/parking-php-js/back/backend.php",
+      "http://localhost:8888/parking-php-js/back/routes/list_vehicles.php",
       {
         method: "GET",
       }
@@ -34,3 +34,5 @@ async function obtenerVehiculos() {
     console.error("Error en la solicitud:", error);
   }
 }
+
+export { obtenerVehiculos };
