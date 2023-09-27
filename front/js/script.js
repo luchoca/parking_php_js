@@ -1,8 +1,6 @@
-import { initForm } from "./formulario.js";
 import { mostrarVehiculosEnEdificio } from "./edificio.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  initForm();
   obtenerVehiculos();
 });
 

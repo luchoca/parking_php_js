@@ -1,6 +1,5 @@
 import { obtenerVehiculos } from "./script.js";
 
-// Función para mostrar los vehículos en el edificio
 export function mostrarVehiculosEnEdificio(vehiculos) {
   const edificio = document.getElementById("edificio");
   edificio.innerHTML = "";
@@ -27,11 +26,9 @@ export function mostrarVehiculosEnEdificio(vehiculos) {
         lugarDiv.textContent = `${vehiculo.matricula} - Lugar ${vehiculo.lugar}`;
         lugarDiv.classList.add("ocupado");
 
-        // Agrega un botón para desocupar el lugar
         const desocuparBtn = document.createElement("button");
         desocuparBtn.textContent = "Desocupar";
         desocuparBtn.addEventListener("click", () => {
-          // Llama a la función para desocupar el lugar y pasa el vehículo como argumento
           desocuparLugar(vehiculo);
         });
         lugarDiv.appendChild(desocuparBtn);
@@ -48,9 +45,7 @@ export function mostrarVehiculosEnEdificio(vehiculos) {
   const mensajeLleno = document.getElementById("mensaje-lleno");
   mensajeLleno.style.display = vehiculosActuales >= 50 ? "block" : "none";
 }
-// Función para desocupar un lugar y eliminar el vehículo
 export function desocuparLugar(vehiculo) {
-  // Realiza una solicitud DELETE al backend PHP para eliminar el vehículo
   fetch(
     `http://localhost:8888/parking-php-js/back/routes/delete_vehicle.php?id=${vehiculo.id}`,
     {
@@ -59,13 +54,9 @@ export function desocuparLugar(vehiculo) {
   )
     .then((response) => {
       if (response.status === 204) {
-        // Éxito: el vehículo se eliminó correctamente
         alert("El vehículo se eliminó correctamente.");
         obtenerVehiculos();
-        // Actualiza la interfaz de usuario para reflejar la eliminación
-        // Esto podría incluir recargar la lista de vehículos en el edificio.
       } else {
-        // Error: algo salió mal
         alert("Error al eliminar el vehículo.");
       }
     })

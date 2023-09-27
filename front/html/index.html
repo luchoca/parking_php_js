@@ -2,10 +2,10 @@
 <html>
   <head>
     <title>Parking</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="../style.css" />
   </head>
   <body>
-    <div class="contenedor">
+    <div class="contenedor-principal">
       <h1 class="titulo">Registro de Vehículo</h1>
       <form id="formulario-crear">
         <label for="matricula">Matrícula:</label>
@@ -23,30 +23,16 @@
         <label for="lugar">Lugar:</label>
         <input type="number" id="lugar" required /><br /><br />
 
-        <input type="submit" value="Crear Vehículo" />
+        <input type="submit" value="Crear Vehiculo" />
+        <a href="edificio.html">VER LUGARES</a>
       </form>
       <div id="mensaje" style="display: none"></div>
-
       <div id="mensaje-lleno" style="display: none; text-align: center">
         El estacionamiento está lleno. No se puede agregar más vehículos.
       </div>
       <div id="contenedor-mensajes"></div>
     </div>
 
-    <br />
-    <hr />
-
-    <div class="contenedor-parking">
-      <h1 class="titulo-parking">- PARKING -</h1>
-      <p style="text-align: center; margin: 1%" id="contador-lugares">
-        Lugares disponibles:
-      </p>
-      <ul class="titulo" id="lista-vehiculos"></ul>
-      <div id="edificio">
-        <!--         <button class="eliminar" data-lugar="${lugar}">Eliminar</button>
- -->
-      </div>
-    </div>
     <footer id="footer">
       <div class="container">
         <p>&copy; Prueba Tecnica Pay Pros - Luciano Castro</p>

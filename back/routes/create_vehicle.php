@@ -1,6 +1,4 @@
 <?php
-
-
 include_once("backend.php");
 require_once('../config/database.php');
 
@@ -24,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $row = $countResult->fetch_assoc();
     $vehicleCount = (int)$row["vehicle_count"];
 
-    // Respuesta genérica para todos los casos
     $response = array();
 
     // Verificar si la cantidad de vehículos alcanzó el límite de 50
@@ -42,6 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($stmt_verificar->num_rows > 0) {
             http_response_code(400);
             $response["message"] = "La matrícula ya está registrada.";
+            echo ($response["message"]);
+            echo ("La matrícula ya está registrada.");
         } else {
             // Verificar si el lugar está ocupado
             $verificarLugar = "SELECT id FROM vehiculos WHERE lugar = ?";
@@ -53,6 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($stmt_verificar_lugar->num_rows > 0) {
                 http_response_code(400);
                 $response["message"] = "El lugar ya está ocupado por otro vehículo.";
+                echo ($response["message"]);
+                echo ("El lugar ya está ocupado por otro vehículo.");
             } else {
                 $insertarVehiculo = "INSERT INTO vehiculos (matricula, marca, modelo, color, lugar)
                             VALUES (?, ?, ?, ?, ?)";
@@ -71,10 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    // Enviar la respuesta como JSON
     header("Content-Type: application/json");
     echo json_encode($response);
 }
 ?>
 
-?>

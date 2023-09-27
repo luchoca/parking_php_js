@@ -1,5 +1,6 @@
 <?php
-class Vehicle
+/* No se utiliza pero, puede utilizarse......
+ *//* class Vehicle
 {
     private $conn;
     private $table_name = "vehiculos";
@@ -16,23 +17,17 @@ class Vehicle
         $this->conn = $db;
     }
 
-    // Métodos para interactuar con la base de datos relacionados con los vehículos
-    // Ejemplo de método para crear un vehículo
+
     function create()
     {
-        // Código para crear un vehículo en la base de datos
     }
 
-    // Ejemplo de método para listar vehículos
     function read()
     {
-        // Código para listar vehículos desde la base de datos
     }
 
-    // Ejemplo de método para eliminar un vehículo
     function delete()
     {
-        // Código para eliminar un vehículo de la base de datos
     }
-}
+} */
 ?>
