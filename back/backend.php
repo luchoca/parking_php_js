@@ -32,6 +32,5 @@ if ($conexion->query($crearTabla) === TRUE) {
 } else {
     echo "Error al crear la tabla 'vehiculos': " . $conexion->error;
 }
-
 $conexion->close();
 ?>
