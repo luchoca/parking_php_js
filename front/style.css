@@ -150,4 +150,15 @@ button {
 }
 a {
   margin: 10px;
+  text-decoration: none;
+  color: #303030;
+}
+
+a:hover {
+  padding: 10px;
+  background: #c9c9c9;
+  border-radius: 9%;
+}
+.boton-ver-lugares {
+  margin: 30px;
 }
